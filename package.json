@@ -1,14 +1,14 @@
 {
-  "name": "hyperdrive-schema",
+  "name": "hyperdrive-schemas",
   "version": "1.0.0",
-  "description": "The extracted protobuf schema from Hyperdrive.",
+  "description": "Protobuf schemas for Hyperdrive and its daemon.",
   "main": "index.js",
   "scripts": {
-    "build": "protocol-buffers schema.proto -o lib/messages.js"
+    "build": "protocol-buffers schemas/hyperdrive.proto -o lib/messages.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andrewosh/hyperdrive-schema.git"
+    "url": "git+https://github.com/andrewosh/hyperdrive-schemas.git"
   },
   "keywords": [
     "hyperdrive",
@@ -18,9 +18,9 @@
   "author": "Andrew Osheroff <andrewosh@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/andrewosh/hyperdrive-schema/issues"
+    "url": "https://github.com/andrewosh/hyperdrive-schemas/issues"
   },
-  "homepage": "https://github.com/andrewosh/hyperdrive-schema#readme",
+  "homepage": "https://github.com/andrewosh/hyperdrive-schemas#readme",
   "devDependencies": {
     "protocol-buffers": "^4.1.0"
   }

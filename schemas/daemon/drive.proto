@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+import "daemon/common.proto";
+import "hyperdrive.proto";
+
+message GetDriveRequest {
+  HyperdriveOptions opts = 1;
+}
+message GetDriveResponse {
+  HyperdriveOptions opts = 1;
+}
+
+message WriteFileRequest {
+  bytes key = 1;
+  string path = 2;
+  bytes contents = 3;
+}
+message WriteFileResponse {}
+
+message ReadFileRequest {
+  bytes key = 1;
+  string path = 2;
+}
+message ReadFileResponse {
+  bytes contents = 1;
+}
+
+message ListRequest {
+  bytes key = 1;
+  string dir = 2;
+}
+message ListResponse {
+  repeated Stat files = 1;
+}
+
+message StatRequest {
+  bytes key = 1;
+  string path = 2;
+  bool lstat = 3;
+}
+message StatResponse {
+  Stat stat = 1;
+}
+
+service Drive {
+  rpc get (GetDriveRequest) returns (GetDriveResponse);
+  rpc writeFile (WriteFileRequest) returns (WriteFileResponse);
+  rpc readFile (ReadFileRequest) returns (ReadFileResponse);
+  rpc list (ListRequest) returns (ListResponse);
+  rpc stat (StatRequest) returns (StatResponse);
+  // TODO: Extend with the rest of the Hyperdrive API
+}
+ 

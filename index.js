@@ -1,6 +1,7 @@
 const p = require('path')
 
 module.exports = {
-  schema: p.join(__dirname, 'schema.proto'),
+  hyperdriveSchemaPath: p.join(__dirname, 'schemas', 'hyperdrive.proto'),
+  daemonSchemaPaths: p.join(__dirname, 'schemas', 'daemon'),
   messages: require('./lib/messages')
 }
