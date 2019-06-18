@@ -7,8 +7,8 @@ message MountRequest {
   HyperdriveOptions opts = 2;
 }
 message MountResponse {
+  string path = 1;
   HyperdriveOptions mountInfo = 2;
-  string path = 3;
 }
 
 message UnmountRequest {}
