@@ -24,4 +24,5 @@ message Stat {
   optional uint64 ctime = 9;
   optional string linkname = 10;
   optional Mount mount = 11;
+  map<string, bytes> metadata = 12;
 }
