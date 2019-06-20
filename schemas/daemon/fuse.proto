@@ -11,6 +11,16 @@ message MountResponse {
   HyperdriveOptions mountInfo = 2;
 }
 
+message PublishRequest {
+  string path = 1;
+}
+message PublishResponse {}
+
+message UnpublishRequest {
+  string path = 1;
+}
+message UnpublishResponse {}
+
 message UnmountRequest {}
 message UnmountResponse {}
 
@@ -23,5 +33,7 @@ message FuseStatusResponse {
 service Fuse {
   rpc status (FuseStatusRequest) returns (FuseStatusResponse);
   rpc mount (MountRequest) returns (MountResponse);
+  rpc publish (PublishRequest) returns (PublishResponse);
+  rpc unpublish (UnpublishRequest) returns (UnpublishResponse);
   rpc unmount (UnmountRequest) returns (UnmountResponse);
 }

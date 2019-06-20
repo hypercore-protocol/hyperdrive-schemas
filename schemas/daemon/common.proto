@@ -5,7 +5,5 @@ message HyperdriveOptions {
   bytes key = 1;
   uint64 version = 2;
   bytes hash = 3;
-  bool sparse = 4;
-  bool sparseMetadata = 5;
   bool seed = 6;
 }
