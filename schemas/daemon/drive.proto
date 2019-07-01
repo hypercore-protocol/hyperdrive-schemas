@@ -3,38 +3,84 @@ syntax = "proto3";
 import "daemon/common.proto";
 import "hyperdrive.proto";
 
+// Create a session for a hyperdrive by key, version, and hash.
 message GetDriveRequest {
   HyperdriveOptions opts = 1;
 }
 message GetDriveResponse {
-  HyperdriveOptions opts = 1;
+  string id = 1;
+  HyperdriveOptions opts = 2;
 }
 
+// Hyperdrive.writeFile
 message WriteFileRequest {
-  bytes key = 1;
+  string id = 1;
   string path = 2;
   bytes contents = 3;
 }
 message WriteFileResponse {}
 
+// Hyperdrive.readFile
 message ReadFileRequest {
-  bytes key = 1;
+  string id = 1;
   string path = 2;
 }
 message ReadFileResponse {
   bytes contents = 1;
 }
 
-message ListRequest {
-  bytes key = 1;
-  string dir = 2;
+// Hyperdrive.open
+message OpenRequest {
+  string id = 1;
+  string path = 2;
+  uint32 flags = 3;
 }
-message ListResponse {
+message OpenResponse {
+  string id = 1;
+  uint32 fd = 2;
+}
+
+// Hyperdrive.close (closes either a file descriptor or the whole drive).
+message CloseRequest {
+  string id = 1;
+  uint32 fd = 2;
+}
+message CloseResponse {
+  string id = 1;
+  uint32 fd = 2;
+}
+
+// Write to a FD previously opened with an OpenRequest.
+message WriteRequest {
+  uint32 fd = 1;
+  uint64 offset = 2;
+  bytes contents = 3;
+}
+message WriteResponse {}
+
+// Read from a FD previously opened with an OpenRequest.
+message ReadRequest {
+  uint32 fd = 1;
+  uint64 offset = 2;
+  uint64 length = 3;
+}
+message ReadResponse {
+  bytes content = 1;
+}
+
+// Hyperdrive.readdir
+message ReadDirectoryRequest {
+  string id = 1;
+  string dir = 2;
+  bool recursive = 3;
+}
+message ReadDirectoryResponse {
   repeated Stat files = 1;
 }
 
+// Hyperdrive.stat
 message StatRequest {
-  bytes key = 1;
+  string id = 1;
   string path = 2;
   bool lstat = 3;
 }
@@ -44,9 +90,12 @@ message StatResponse {
 
 service Drive {
   rpc get (GetDriveRequest) returns (GetDriveResponse);
+  rpc open (OpenRequest) returns (OpenResponse);
+  rpc read (stream ReadRequest) returns (stream ReadResponse);
+  rpc write (stream WriteRequest) returns (stream WriteResponse);
   rpc writeFile (WriteFileRequest) returns (WriteFileResponse);
   rpc readFile (ReadFileRequest) returns (ReadFileResponse);
-  rpc list (ListRequest) returns (ListResponse);
+  rpc readdir (ReadDirectoryRequest) returns (ReadDirectoryResponse);
   rpc stat (StatRequest) returns (StatResponse);
   // TODO: Extend with the rest of the Hyperdrive API
 }
