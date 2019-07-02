@@ -8,61 +8,61 @@ message GetDriveRequest {
   HyperdriveOptions opts = 1;
 }
 message GetDriveResponse {
-  string id = 1;
+  uint64 id = 1;
   HyperdriveOptions opts = 2;
 }
 
 // Hyperdrive.writeFile
 message WriteFileRequest {
-  string id = 1;
+  uint64 id = 1;
   string path = 2;
-  bytes contents = 3;
+  bytes content = 3;
 }
 message WriteFileResponse {}
 
 // Hyperdrive.readFile
 message ReadFileRequest {
-  string id = 1;
+  uint64 id = 1;
   string path = 2;
 }
 message ReadFileResponse {
-  bytes contents = 1;
+  bytes content = 1;
 }
 
 // Hyperdrive.open
 message OpenRequest {
-  string id = 1;
+  uint64 id = 1;
   string path = 2;
   uint32 flags = 3;
 }
 message OpenResponse {
-  string id = 1;
-  uint32 fd = 2;
+  uint32 fd = 1;
 }
 
 // Hyperdrive.close (closes either a file descriptor or the whole drive).
 message CloseRequest {
-  string id = 1;
+  uint64 id = 1;
   uint32 fd = 2;
 }
 message CloseResponse {
-  string id = 1;
-  uint32 fd = 2;
+  uint32 fd = 1;
 }
 
 // Write to a FD previously opened with an OpenRequest.
 message WriteRequest {
-  uint32 fd = 1;
-  uint64 offset = 2;
-  bytes contents = 3;
+  uint64 id = 1;
+  uint32 fd = 2;
+  uint64 offset = 3;
+  bytes contents = 4;
 }
 message WriteResponse {}
 
 // Read from a FD previously opened with an OpenRequest.
 message ReadRequest {
-  uint32 fd = 1;
-  uint64 offset = 2;
-  uint64 length = 3;
+  uint64 id = 1;
+  uint32 fd = 2;
+  uint64 offset = 3;
+  uint64 length = 4;
 }
 message ReadResponse {
   bytes content = 1;
@@ -70,23 +70,51 @@ message ReadResponse {
 
 // Hyperdrive.readdir
 message ReadDirectoryRequest {
-  string id = 1;
-  string dir = 2;
+  uint64 id = 1;
+  string path = 2;
   bool recursive = 3;
 }
 message ReadDirectoryResponse {
-  repeated Stat files = 1;
+  repeated string files = 1;
 }
 
 // Hyperdrive.stat
 message StatRequest {
-  string id = 1;
+  uint64 id = 1;
   string path = 2;
   bool lstat = 3;
 }
 message StatResponse {
   Stat stat = 1;
 }
+
+// Hyperdrive.watch
+message WatchRequest {
+  uint64 id = 1;
+  string path = 2;
+}
+message WatchResponse {
+  uint32 watcher = 1;
+}
+
+// Listen to a registered watcher.
+message ListenRequest {
+  uint64 id = 1;
+  uint32 watcher = 2;
+}
+message ListenResponse {}
+
+// Unregister a watcher
+message UnwatchRequest {
+  uint64 id = 1;
+  uint32 watcher = 2;
+}
+message UnwatchResponse {}
+
+message CloseSessionRequest {
+  uint64 id = 1;
+}
+message CloseSessionResponse {}
 
 service Drive {
   rpc get (GetDriveRequest) returns (GetDriveResponse);
@@ -97,6 +125,10 @@ service Drive {
   rpc readFile (ReadFileRequest) returns (ReadFileResponse);
   rpc readdir (ReadDirectoryRequest) returns (ReadDirectoryResponse);
   rpc stat (StatRequest) returns (StatResponse);
+  rpc watch (WatchRequest) returns (WatchResponse);
+  rpc listen (ListenRequest) returns (stream ListenResponse);
+  rpc unwatch (UnwatchRequest) returns (UnwatchResponse);
+  rpc closeSession (CloseSessionRequest) returns (CloseSessionResponse);
   // TODO: Extend with the rest of the Hyperdrive API
 }
  
