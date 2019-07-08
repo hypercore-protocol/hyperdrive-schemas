@@ -12,6 +12,18 @@ message GetDriveResponse {
   HyperdriveOptions opts = 2;
 }
 
+// Make a drive discoverable on the network
+message PublishDriveRequest {
+  uint64 id = 1;
+}
+message PublishDriveResponse {}
+
+// Make a drive undiscoverable on the network
+message UnpublishDriveRequest {
+  uint64 id = 1;
+}
+message UnpublishDriveResponse {}
+
 // Hyperdrive.writeFile
 message WriteFileRequest {
   uint64 id = 1;
@@ -111,24 +123,37 @@ message UnwatchRequest {
 }
 message UnwatchResponse {}
 
+// Hyperdrive.mount
+message MountDriveRequest {
+  uint64 id = 1;
+  string path = 2;
+  Mount opts = 3;
+}
+message MountDriveResponse {}
+
 message CloseSessionRequest {
   uint64 id = 1;
 }
 message CloseSessionResponse {}
 
 service Drive {
+  // Management methods
   rpc get (GetDriveRequest) returns (GetDriveResponse);
+  rpc close (CloseSessionRequest) returns (CloseSessionResponse);
+  rpc publish (PublishDriveRequest) returns (PublishDriveResponse);
+  rpc unpublish (UnpublishDriveRequest) returns (UnpublishDriveResponse);
+
+  // Drive operations
   rpc open (OpenRequest) returns (OpenResponse);
   rpc read (stream ReadRequest) returns (stream ReadResponse);
   rpc write (stream WriteRequest) returns (stream WriteResponse);
   rpc writeFile (WriteFileRequest) returns (WriteFileResponse);
   rpc readFile (ReadFileRequest) returns (ReadFileResponse);
   rpc readdir (ReadDirectoryRequest) returns (ReadDirectoryResponse);
+  rpc mount (MountDriveRequest) returns (MountDriveResponse);
   rpc stat (StatRequest) returns (StatResponse);
   rpc watch (WatchRequest) returns (WatchResponse);
   rpc listen (ListenRequest) returns (stream ListenResponse);
   rpc unwatch (UnwatchRequest) returns (UnwatchResponse);
-  rpc closeSession (CloseSessionRequest) returns (CloseSessionResponse);
-  // TODO: Extend with the rest of the Hyperdrive API
 }
  
