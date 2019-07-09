@@ -3,52 +3,64 @@ syntax = "proto3";
 import "daemon/common.proto";
 import "hyperdrive.proto";
 
-// Create a session for a hyperdrive by key, version, and hash.
+/**
+ * Create a session for a hyperdrive by key, version, and hash.
+ */
 message GetDriveRequest {
-  HyperdriveOptions opts = 1;
+  HyperdriveOptions opts = 1; // Hyperdrive options.
 }
 message GetDriveResponse {
-  uint64 id = 1;
-  HyperdriveOptions opts = 2;
+  uint64 id = 1; // A new session ID.
+  HyperdriveOptions opts = 2; // Hyperdrive options.
 }
 
-// Make a drive discoverable on the network
+/**
+ * Advertise a drive on the network.
+ */
 message PublishDriveRequest {
-  uint64 id = 1;
+  uint64 id = 1; // A session ID.
 }
 message PublishDriveResponse {}
 
-// Make a drive undiscoverable on the network
+/**
+ * Stop advertising a drive on the network.
+ */
 message UnpublishDriveRequest {
-  uint64 id = 1;
+  uint64 id = 1; // A session ID.
 }
 message UnpublishDriveResponse {}
 
-// Hyperdrive.writeFile
+/**
+ * Write a file into a drive.
+ */
 message WriteFileRequest {
-  uint64 id = 1;
-  string path = 2;
-  bytes content = 3;
+  uint64 id = 1; // A session ID.
+  string path = 2; // The file path.
+  bytes content = 3; // The file contents.
 }
 message WriteFileResponse {}
 
-// Hyperdrive.readFile
+/**
+ * Read a file from a drive.
+ */
 message ReadFileRequest {
-  uint64 id = 1;
-  string path = 2;
+  uint64 id = 1; // A session ID.
+  string path = 2; // The file path.
 }
 message ReadFileResponse {
-  bytes content = 1;
+  bytes content = 1; // The file contents.
 }
 
-// Hyperdrive.open
+/**
+ * Open a file descriptor.
+ */
 message OpenRequest {
-  uint64 id = 1;
-  string path = 2;
-  uint32 flags = 3;
+  uint64 id = 1; // A session ID.
+  string path = 2; // The file path.
+  uint32 flags = 3; // File descriptor flags.
 }
 message OpenResponse {
-  uint32 fd = 1;
+  uint32 fd = 1; // A file descriptor that can be used in subsequent read/write operations.
 }
 
 // Hyperdrive.close (closes either a file descriptor or the whole drive).
