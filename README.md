@@ -1,2 +1,2 @@
-# hyperdrive-schema
-The extracted protobuf schema from Hyperdrive.
+# hyperdrive-schemas
+Protobuf/gRPC schemas for the Hyperdrive API.
