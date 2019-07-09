@@ -1,6 +1,6 @@
 {
   "name": "hyperdrive-schemas",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "description": "Protobuf schemas for Hyperdrive and its daemon.",
   "main": "index.js",
   "scripts": {
