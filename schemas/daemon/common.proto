@@ -5,5 +5,14 @@ message HyperdriveOptions {
   bytes key = 1;
   uint64 version = 2;
   bytes hash = 3;
-  bool seed = 6;
+  bool writable = 4;
+}
+
+message DriveStats {
+  bytes key = 1;                        // Drive key.
+  uint32 peers = 2;                     // Number of connected peers.
+  uint64 uploadedBytes = 3;             // Bytes uploaded since the daemon was started. 
+  uint64 downloadedBytes = 4;           // Bytes downloaded since the daemon was started.
+  uint64 uploadedBytesCumulative = 5;   // Bytes uploaded accumulated across daemon restarts.
+  uint64 downloadedBytesCumulative = 6; // Bytes downloaded accumulated across daemon restarts.
 }

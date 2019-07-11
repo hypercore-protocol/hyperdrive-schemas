@@ -3,6 +3,8 @@ syntax = "proto3";
 import "daemon/common.proto";
 import "hyperdrive.proto";
 
+// Cross-drive operations
+
 /**
  * Create a session for a hyperdrive by key, version, and hash.
  */
@@ -13,6 +15,24 @@ message GetDriveResponse {
   uint64 id = 1; // A new session ID.
   HyperdriveOptions opts = 2; // Hyperdrive options.
 }
+
+/**
+ * Get networking statistics across all drives.
+ */
+message StatsRequest {}
+message StatsResponse {
+  repeated DriveStats stats = 1;
+}
+
+/**
+ * Get the list of drives that are being advertised.
+ */
+message ActiveRequest {}
+message ActiveResponse {
+  repeated HyperdriveOptions drives = 1;
+}
+
+// Session-specific operations
 
 /**
  * Advertise a drive on the network.
@@ -29,6 +49,18 @@ message UnpublishDriveRequest {
   uint64 id = 1; // A session ID.
 }
 message UnpublishDriveResponse {}
+
+/**
+ * Get networking statistics for a single drive.
+ */
+message DriveStatsRequest {
+  uint64 id = 1; // A session ID.
+}
+message DriveStatsResponse {
+  DriveStats stats = 1;
+}
+
+// Drive operations
 
 /**
  * Write a file into a drive.
@@ -92,6 +124,13 @@ message ReadResponse {
   bytes content = 1;
 }
 
+// Hyperdrive.unlink
+message UnlinkRequest {
+  uint64 id = 1;
+  uint64 path = 2;
+}
+message UnlinkResponse {}
+
 // Hyperdrive.readdir
 message ReadDirectoryRequest {
   uint64 id = 1;
@@ -101,6 +140,21 @@ message ReadDirectoryRequest {
 message ReadDirectoryResponse {
   repeated string files = 1;
 }
+
+// Hyperdrive.mkdir
+message MkdirRequest {
+  uint64 id = 1;
+  string path = 2;
+  uint64 mode = 3;
+}
+message MkdirResponse {}
+
+// Hyperdrive.rmdir
+message RmdirRequest {
+  uint64 id = 1;
+  string path = 2;
+}
+message RmdirResponse {}
 
 // Hyperdrive.stat
 message StatRequest {
@@ -117,23 +171,7 @@ message WatchRequest {
   uint64 id = 1;
   string path = 2;
 }
-message WatchResponse {
-  uint32 watcher = 1;
-}
-
-// Listen to a registered watcher.
-message ListenRequest {
-  uint64 id = 1;
-  uint32 watcher = 2;
-}
-message ListenResponse {}
-
-// Unregister a watcher
-message UnwatchRequest {
-  uint64 id = 1;
-  uint32 watcher = 2;
-}
-message UnwatchResponse {}
+message WatchResponse {}
 
 // Hyperdrive.mount
 message MountDriveRequest {
@@ -152,8 +190,12 @@ service Drive {
   // Management methods
   rpc get (GetDriveRequest) returns (GetDriveResponse);
   rpc close (CloseSessionRequest) returns (CloseSessionResponse);
+  rpc allStats (StatsRequest) returns (StatsResponse);
+
+  // Session-specific operations
   rpc publish (PublishDriveRequest) returns (PublishDriveResponse);
   rpc unpublish (UnpublishDriveRequest) returns (UnpublishDriveResponse);
+  rpc stats (DriveStatsRequest) returns (DriveStatsResponse);
 
   // Drive operations
   rpc open (OpenRequest) returns (OpenResponse);
@@ -162,10 +204,11 @@ service Drive {
   rpc writeFile (WriteFileRequest) returns (WriteFileResponse);
   rpc readFile (ReadFileRequest) returns (ReadFileResponse);
   rpc readdir (ReadDirectoryRequest) returns (ReadDirectoryResponse);
+  rpc mkdir (MkdirRequest) returns (MkdirResponse);
+  rpc rmdir (RmdirRequest) returns (RmdirResponse);
+  rpc unlink (UnlinkRequest) returns (UnlinkResponse);
   rpc mount (MountDriveRequest) returns (MountDriveResponse);
   rpc stat (StatRequest) returns (StatResponse);
-  rpc watch (WatchRequest) returns (WatchResponse);
-  rpc listen (ListenRequest) returns (stream ListenResponse);
-  rpc unwatch (UnwatchRequest) returns (UnwatchResponse);
+  rpc watch (WatchRequest) returns (stream WatchResponse);
 }
  
