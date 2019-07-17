@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "hyperdrive.proto";
+
 // TODO: extend with additional options
 message HyperdriveOptions {
   bytes key = 1;
@@ -8,11 +10,26 @@ message HyperdriveOptions {
   bool writable = 4;
 }
 
-message DriveStats {
+message MountInfo {
+  string path = 1;
+  Mount opts = 2;
+}
+
+message CoreStats {
   bytes key = 1;                        // Drive key.
   uint32 peers = 2;                     // Number of connected peers.
   uint64 uploadedBytes = 3;             // Bytes uploaded since the daemon was started. 
   uint64 downloadedBytes = 4;           // Bytes downloaded since the daemon was started.
   uint64 uploadedBytesCumulative = 5;   // Bytes uploaded accumulated across daemon restarts.
   uint64 downloadedBytesCumulative = 6; // Bytes downloaded accumulated across daemon restarts.
+}
+
+message MountStats {
+  string path = 1;
+  CoreStats metadata = 2;
+  CoreStats content = 3;
+}
+
+message DriveStats {
+  repeated MountStats stats = 1;
 }

@@ -60,27 +60,64 @@ message DriveStatsResponse {
   DriveStats stats = 1;
 }
 
+/**
+ * Get mount information for a single drive.
+ */
+message DriveMountsRequest {
+  uint64 id = 1; // A session ID.
+  bool recursive = 2; // List mounts recursively.
+  bool memory = 3; // Only list mounts that are currently cached in memory.
+}
+message DriveMountsResponse {
+  repeated MountInfo mounts = 1;
+}
+
 // Drive operations
 
 /**
- * Write a file into a drive.
+ * Create a file write stream.
+ */
+message WriteStreamRequest {
+  uint64 id = 1; // A session ID.
+  string path = 2; // The file path.
+  bytes chunk = 3; // A file contents chunk.
+  Stat opts = 4; // Optional stat options.
+}
+message WriteStreamResponse {}
+
+/**
+ * Write a file.
  */
 message WriteFileRequest {
   uint64 id = 1; // A session ID.
   string path = 2; // The file path.
-  bytes content = 3; // The file contents.
+  bytes chunk = 3; // A file contents chunk.
 }
 message WriteFileResponse {}
 
 /**
- * Read a file from a drive.
+ * Create a file read stream.
+ */
+message ReadStreamRequest {
+  uint64 id = 1; // A session ID.
+  string path = 2; // The file path.
+  uint64 start = 3; // The file offset at which to start reading.
+  uint64 end = 4; // The file offset at which to stop reading.
+  uint64 length = 5; // The total length to read.
+}
+message ReadStreamResponse {
+  bytes chunk = 1;
+}
+
+/**
+ * Read a file.
  */
 message ReadFileRequest {
   uint64 id = 1; // A session ID.
   string path = 2; // The file path.
 }
 message ReadFileResponse {
-  bytes content = 1; // The file contents.
+  bytes chunk = 1; // A file contents chunk.
 }
 
 /**
@@ -176,10 +213,16 @@ message WatchResponse {}
 // Hyperdrive.mount
 message MountDriveRequest {
   uint64 id = 1;
-  string path = 2;
-  Mount opts = 3;
+  MountInfo info = 2;
 }
 message MountDriveResponse {}
+
+// Hyperdrive.unmount
+message UnmountDriveRequest {
+  uint64 id = 1;
+  string path = 2;
+}
+message UnmountDriveResponse {}
 
 message CloseSessionRequest {
   uint64 id = 1;
@@ -191,6 +234,7 @@ service Drive {
   rpc get (GetDriveRequest) returns (GetDriveResponse);
   rpc close (CloseSessionRequest) returns (CloseSessionResponse);
   rpc allStats (StatsRequest) returns (StatsResponse);
+  rpc active (ActiveRequest) returns (ActiveResponse);
 
   // Session-specific operations
   rpc publish (PublishDriveRequest) returns (PublishDriveResponse);
@@ -201,14 +245,18 @@ service Drive {
   rpc open (OpenRequest) returns (OpenResponse);
   rpc read (stream ReadRequest) returns (stream ReadResponse);
   rpc write (stream WriteRequest) returns (stream WriteResponse);
-  rpc writeFile (WriteFileRequest) returns (WriteFileResponse);
-  rpc readFile (ReadFileRequest) returns (ReadFileResponse);
+  rpc createWriteStream (stream WriteStreamRequest) returns (WriteStreamResponse);
+  rpc writeFile (stream WriteFileRequest) returns (WriteFileResponse);
+  rpc createReadStream (ReadStreamRequest) returns (stream ReadStreamResponse);
+  rpc readFile (ReadFileRequest) returns (stream ReadFileResponse);
   rpc readdir (ReadDirectoryRequest) returns (ReadDirectoryResponse);
   rpc mkdir (MkdirRequest) returns (MkdirResponse);
   rpc rmdir (RmdirRequest) returns (RmdirResponse);
   rpc unlink (UnlinkRequest) returns (UnlinkResponse);
   rpc mount (MountDriveRequest) returns (MountDriveResponse);
+  rpc unmount (UnmountDriveRequest) returns (UnmountDriveResponse);
+  rpc mounts (DriveMountsRequest) returns (DriveMountsResponse);
   rpc stat (StatRequest) returns (StatResponse);
-  rpc watch (WatchRequest) returns (stream WatchResponse);
+  rpc watch (stream WatchRequest) returns (stream WatchResponse);
 }
  
