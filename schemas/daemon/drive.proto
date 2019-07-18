@@ -182,7 +182,7 @@ message ReadDirectoryResponse {
 message MkdirRequest {
   uint64 id = 1;
   string path = 2;
-  uint64 mode = 3;
+  Stat opts = 3;
 }
 message MkdirResponse {}
 
@@ -224,6 +224,14 @@ message UnmountDriveRequest {
 }
 message UnmountDriveResponse {}
 
+// Hyperdrive.symlink
+message SymlinkRequest {
+  uint64 id = 1;
+  string target = 2;
+  string linkname = 3;
+}
+message SymlinkResponse {}
+
 message CloseSessionRequest {
   uint64 id = 1;
 }
@@ -258,5 +266,6 @@ service Drive {
   rpc mounts (DriveMountsRequest) returns (DriveMountsResponse);
   rpc stat (StatRequest) returns (StatResponse);
   rpc watch (stream WatchRequest) returns (stream WatchResponse);
+  rpc symlink (SymlinkRequest) returns (SymlinkResponse);
 }
  
