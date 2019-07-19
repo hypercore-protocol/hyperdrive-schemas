@@ -164,7 +164,7 @@ message ReadResponse {
 // Hyperdrive.unlink
 message UnlinkRequest {
   uint64 id = 1;
-  uint64 path = 2;
+  string path = 2;
 }
 message UnlinkResponse {}
 
