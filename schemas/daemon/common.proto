@@ -33,3 +33,22 @@ message MountStats {
 message DriveStats {
   repeated MountStats stats = 1;
 }
+
+message DownloadProgress {
+  uint64 downloadedBlocks = 2;
+  uint64 downloadedBytes = 3;
+  uint64 totalBlocks = 4;
+  uint64 totalBytes = 5;
+  bool completed = 6;
+  bool cancelled = 7;
+}
+
+message FileDownloadStatus {
+  string path = 1;
+  DownloadProgress progress = 2;
+}
+
+message DiffEntry {
+  Stat stat = 1;
+  Mount mount = 2;
+}

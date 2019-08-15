@@ -75,6 +75,18 @@ message DriveMountsResponse {
 // Drive operations
 
 /**
+ * Hyperdrive.version
+ *
+ * Get the version of a drive.
+ */
+message DriveVersionRequest {
+  uint64 id = 1; // A session ID.
+}
+message DriveVersionResponse {
+  uint64 version = 1;
+}
+
+/**
  * Create a file write stream.
  */
 message WriteStreamRequest {
@@ -110,6 +122,8 @@ message ReadStreamResponse {
 }
 
 /**
+   Hyperdrive.readFile
+
  * Read a file.
  */
 message ReadFileRequest {
@@ -121,7 +135,25 @@ message ReadFileResponse {
 }
 
 /**
- * Open a file descriptor.
+ * Hyperdrive.createDiffStream
+ *
+ * Create a diff stream between two versions, optionally within a specified prefix.
+ */
+message DiffStreamRequest {
+  uint64 id = 1; // A session ID.
+  string prefix = 2; // An optional prefix.
+  uint64 other = 3; // The other version (default 0).
+}
+message DiffStreamResponse {
+  string type = 1;
+  string name = 2;
+  DiffEntry value = 3;
+}
+
+/**
+ * Hyperdrive.open
+ *
+ * Opens a file descriptor.
  */
 message OpenRequest {
   uint64 id = 1; // A session ID.
@@ -131,6 +163,40 @@ message OpenRequest {
 message OpenResponse {
   uint32 fd = 1; // A file descriptor that can be used in subsequent read/write operations.
 }
+
+/**
+ * Hyperdrive.download
+ *
+ * Downloads file contents
+ */
+message DownloadRequest {
+  uint64 id = 1; // A session ID.
+  string path = 2; // The file path.
+  bool detailed = 3; // Show per-file download statistics.
+}
+message DownloadResponse {
+  enum Type {
+    START = 0;
+    PROGRESS = 1;
+    FINISH = 2;
+  }
+
+  Type type = 1;
+  uint64 downloadId = 2;
+  DownloadProgress progress = 3;
+  repeated FileDownloadStatus files = 4;
+}
+
+/**
+ * Hyperdrive.undownload
+ *
+ * Stop a download that's in progress.
+ */
+message UndownloadRequest {
+  uint64 id = 1; // A session ID.
+  uint64 downloadId = 2; // A download ID.
+}
+message UndownloadResponse {}
 
 // Hyperdrive.close (closes either a file descriptor or the whole drive).
 message CloseRequest {
@@ -250,13 +316,17 @@ service Drive {
   rpc stats (DriveStatsRequest) returns (DriveStatsResponse);
 
   // Drive operations
+  rpc version (DriveVersionRequest) returns (DriveVersionResponse);
   rpc open (OpenRequest) returns (OpenResponse);
+  rpc download (DownloadRequest) returns (stream DownloadResponse);
+  rpc undownload (UndownloadRequest) returns (UndownloadResponse);
   rpc read (stream ReadRequest) returns (stream ReadResponse);
   rpc write (stream WriteRequest) returns (stream WriteResponse);
   rpc createWriteStream (stream WriteStreamRequest) returns (WriteStreamResponse);
   rpc writeFile (stream WriteFileRequest) returns (WriteFileResponse);
   rpc createReadStream (ReadStreamRequest) returns (stream ReadStreamResponse);
   rpc readFile (ReadFileRequest) returns (stream ReadFileResponse);
+  rpc createDiffStream (DiffStreamRequest) returns (stream DiffStreamResponse);
   rpc readdir (ReadDirectoryRequest) returns (ReadDirectoryResponse);
   rpc mkdir (MkdirRequest) returns (MkdirResponse);
   rpc rmdir (RmdirRequest) returns (RmdirResponse);
