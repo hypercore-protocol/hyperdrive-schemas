@@ -39,8 +39,6 @@ message DownloadProgress {
   uint64 downloadedBytes = 3;
   uint64 totalBlocks = 4;
   uint64 totalBytes = 5;
-  bool completed = 6;
-  bool cancelled = 7;
 }
 
 message FileDownloadStatus {
@@ -51,4 +49,11 @@ message FileDownloadStatus {
 message DiffEntry {
   Stat stat = 1;
   Mount mount = 2;
+}
+
+message FileStats {
+  uint64 blocks = 1;
+  uint64 size = 2;
+  uint64 downloadedBlocks = 3;
+  uint64 downloadedBytes = 4;
 }

@@ -173,12 +173,14 @@ message DownloadRequest {
   uint64 id = 1; // A session ID.
   string path = 2; // The file path.
   bool detailed = 3; // Show per-file download statistics.
+  uint64 statsInterval = 4; // The interval with which to recompute download statistics.
 }
 message DownloadResponse {
   enum Type {
     START = 0;
     PROGRESS = 1;
     FINISH = 2;
+    CANCEL = 3;
   }
 
   Type type = 1;
@@ -298,6 +300,15 @@ message SymlinkRequest {
 }
 message SymlinkResponse {}
 
+// Hyperdrive.fileStats
+message FileStatsRequest {
+  uint64 id = 1;
+  string path = 2;
+}
+message FileStatsResponse {
+  FileStats stats = 1;
+}
+
 message CloseSessionRequest {
   uint64 id = 1;
 }
@@ -337,5 +348,6 @@ service Drive {
   rpc stat (StatRequest) returns (StatResponse);
   rpc watch (stream WatchRequest) returns (stream WatchResponse);
   rpc symlink (SymlinkRequest) returns (SymlinkResponse);
+  rpc fileStats (FileStatsRequest) returns (FileStatsResponse);
 }
  
