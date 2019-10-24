@@ -93,7 +93,7 @@ message WriteStreamRequest {
   uint64 id = 1; // A session ID.
   string path = 2; // The file path.
   bytes chunk = 3; // A file contents chunk.
-  Stat opts = 4; // Optional stat options.
+  Stat opts = 4; // Optional Stat options.
 }
 message WriteStreamResponse {}
 
@@ -104,6 +104,7 @@ message WriteFileRequest {
   uint64 id = 1; // A session ID.
   string path = 2; // The file path.
   bytes chunk = 3; // A file contents chunk.
+  Stat opts = 4; // Optional Stat object.
 }
 message WriteFileResponse {}
 
@@ -122,8 +123,6 @@ message ReadStreamResponse {
 }
 
 /**
-   Hyperdrive.readFile
-
  * Read a file.
  */
 message ReadFileRequest {
@@ -133,6 +132,26 @@ message ReadFileRequest {
 message ReadFileResponse {
   bytes chunk = 1; // A file contents chunk.
 }
+
+/**
+ * Update file metadata.
+ */
+message UpdateMetadataRequest {
+  uint64 id = 1; // A session ID.
+  string path = 2; // The file path.
+  map<string, bytes> metadata = 3; // The updated file metadata.
+}
+message UpdateMetadataResponse {}
+
+/**
+ * Delete file metadata.
+ */
+message DeleteMetadataRequest {
+  uint64 id = 1; // A session ID.
+  string path = 2; // The file path.
+  repeated string keys = 3; // The metadata keys to delete.
+}
+message DeleteMetadataResponse {}
 
 /**
  * Hyperdrive.createDiffStream
@@ -337,6 +356,8 @@ service Drive {
   rpc writeFile (stream WriteFileRequest) returns (WriteFileResponse);
   rpc createReadStream (ReadStreamRequest) returns (stream ReadStreamResponse);
   rpc readFile (ReadFileRequest) returns (stream ReadFileResponse);
+  rpc updateMetadata(UpdateMetadataRequest) returns (UpdateMetadataResponse);
+  rpc deleteMetadata(DeleteMetadataRequest) returns (DeleteMetadataResponse);
   rpc createDiffStream (DiffStreamRequest) returns (stream DiffStreamResponse);
   rpc readdir (ReadDirectoryRequest) returns (ReadDirectoryResponse);
   rpc mkdir (MkdirRequest) returns (MkdirResponse);
