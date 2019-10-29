@@ -2,6 +2,11 @@ syntax = "proto3";
 
 import "hyperdrive.proto";
 
+message Profile {
+  string name = 1;
+  HyperdriveOptions drive = 2;
+}
+
 // TODO: extend with additional options
 message HyperdriveOptions {
   bytes key = 1;

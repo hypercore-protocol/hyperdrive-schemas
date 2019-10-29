@@ -186,26 +186,14 @@ message OpenResponse {
 /**
  * Hyperdrive.download
  *
- * Downloads file contents
+ * Downloads file or directory contents.
  */
 message DownloadRequest {
   uint64 id = 1; // A session ID.
   string path = 2; // The file path.
-  bool detailed = 3; // Show per-file download statistics.
-  uint64 statsInterval = 4; // The interval with which to recompute download statistics.
 }
 message DownloadResponse {
-  enum Type {
-    START = 0;
-    PROGRESS = 1;
-    FINISH = 2;
-    CANCEL = 3;
-  }
-
-  Type type = 1;
   uint64 downloadId = 2;
-  DownloadProgress progress = 3;
-  repeated FileDownloadStatus files = 4;
 }
 
 /**
@@ -325,7 +313,7 @@ message FileStatsRequest {
   string path = 2;
 }
 message FileStatsResponse {
-  FileStats stats = 1;
+  map<string, FileStats> stats = 1;
 }
 
 message CloseSessionRequest {
@@ -348,7 +336,7 @@ service Drive {
   // Drive operations
   rpc version (DriveVersionRequest) returns (DriveVersionResponse);
   rpc open (OpenRequest) returns (OpenResponse);
-  rpc download (DownloadRequest) returns (stream DownloadResponse);
+  rpc download (DownloadRequest) returns (DownloadResponse);
   rpc undownload (UndownloadRequest) returns (UndownloadResponse);
   rpc read (stream ReadRequest) returns (stream ReadResponse);
   rpc write (stream WriteRequest) returns (stream WriteResponse);
@@ -371,4 +359,3 @@ service Drive {
   rpc symlink (SymlinkRequest) returns (SymlinkResponse);
   rpc fileStats (FileStatsRequest) returns (FileStatsResponse);
 }
- 
