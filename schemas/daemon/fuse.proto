@@ -32,10 +32,27 @@ message FuseStatusResponse {
   bool configured = 2;
 }
 
+message KeyRequest {
+  string path = 1;
+}
+message KeyResponse {
+  string key = 1;
+}
+
+message DownloadRequest {
+  string path = 1;
+}
+
+message DownloadResponse {
+  uint64 downloadId = 1;
+}
+
 service Fuse {
   rpc status (FuseStatusRequest) returns (FuseStatusResponse);
   rpc mount (MountRequest) returns (MountResponse);
   rpc publish (PublishRequest) returns (PublishResponse);
   rpc unpublish (UnpublishRequest) returns (UnpublishResponse);
   rpc unmount (UnmountRequest) returns (UnmountResponse);
+  rpc key (KeyRequest) returns (KeyResponse);
+  rpc download (DownloadRequest) returns (DownloadResponse);
 }
