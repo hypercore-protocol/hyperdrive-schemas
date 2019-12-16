@@ -37,14 +37,7 @@ message KeyRequest {
 }
 message KeyResponse {
   string key = 1;
-}
-
-message DownloadRequest {
-  string path = 1;
-}
-
-message DownloadResponse {
-  uint64 downloadId = 1;
+  string path = 2;
 }
 
 service Fuse {
@@ -54,5 +47,4 @@ service Fuse {
   rpc unpublish (UnpublishRequest) returns (UnpublishResponse);
   rpc unmount (UnmountRequest) returns (UnmountResponse);
   rpc key (KeyRequest) returns (KeyResponse);
-  rpc download (DownloadRequest) returns (DownloadResponse);
 }
