@@ -248,6 +248,7 @@ message ReadDirectoryRequest {
   uint64 id = 1;
   string path = 2;
   bool recursive = 3;
+  bool noMounts = 4;
 }
 message ReadDirectoryResponse {
   repeated string files = 1;
