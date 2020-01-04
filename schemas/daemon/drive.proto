@@ -249,9 +249,11 @@ message ReadDirectoryRequest {
   string path = 2;
   bool recursive = 3;
   bool noMounts = 4;
+  bool includeStats = 5;
 }
 message ReadDirectoryResponse {
   repeated string files = 1;
+  repeated Stat stats = 2;
 }
 
 // Hyperdrive.mkdir
