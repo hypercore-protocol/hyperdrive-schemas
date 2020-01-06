@@ -254,7 +254,7 @@ message ReadDirectoryRequest {
 message ReadDirectoryResponse {
   repeated string files = 1;
   repeated Stat stats = 2;
-  repeated MountInfo mounts = 3;
+  repeated Mount mounts = 3;
 }
 
 // Hyperdrive.mkdir
