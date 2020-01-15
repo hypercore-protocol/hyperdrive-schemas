@@ -35,20 +35,15 @@ message ActiveResponse {
 // Session-specific operations
 
 /**
- * Advertise a drive on the network.
+ * Change the networking options for a drive.
  */
-message PublishDriveRequest {
+message ConfigureNetworkRequest {
   uint64 id = 1; // A session ID.
+  bool lookup = 2; // Lookup the drive on the DHT.
+  bool announce = 3; // Announce the drive on the DHT.
+  bool remember = 4; // Remember this configuration across restarts.
 }
-message PublishDriveResponse {}
-
-/**
- * Stop advertising a drive on the network.
- */
-message UnpublishDriveRequest {
-  uint64 id = 1; // A session ID.
-}
-message UnpublishDriveResponse {}
+message ConfigureNetworkResponse {}
 
 /**
  * Get networking statistics for a single drive.
@@ -334,8 +329,7 @@ service Drive {
   rpc active (ActiveRequest) returns (ActiveResponse);
 
   // Session-specific operations
-  rpc publish (PublishDriveRequest) returns (PublishDriveResponse);
-  rpc unpublish (UnpublishDriveRequest) returns (UnpublishDriveResponse);
+  rpc configureNetwork (ConfigureNetworkRequest) returns (ConfigureNetworkResponse);
   rpc stats (DriveStatsRequest) returns (DriveStatsResponse);
 
   // Drive operations

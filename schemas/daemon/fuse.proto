@@ -16,16 +16,6 @@ message UnmountRequest {
 }
 message UnmountResponse {}
 
-message PublishRequest {
-  string path = 1;
-}
-message PublishResponse {}
-
-message UnpublishRequest {
-  string path = 1;
-}
-message UnpublishResponse {}
-
 message FuseStatusRequest {}
 message FuseStatusResponse {
   bool available = 1;
@@ -43,8 +33,6 @@ message KeyResponse {
 service Fuse {
   rpc status (FuseStatusRequest) returns (FuseStatusResponse);
   rpc mount (MountRequest) returns (MountResponse);
-  rpc publish (PublishRequest) returns (PublishResponse);
-  rpc unpublish (UnpublishRequest) returns (UnpublishResponse);
   rpc unmount (UnmountRequest) returns (UnmountResponse);
   rpc key (KeyRequest) returns (KeyResponse);
 }

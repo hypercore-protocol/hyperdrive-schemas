@@ -28,7 +28,8 @@ message CoreStats {
   uint64 uploadedBytesCumulative = 5;   // Bytes uploaded accumulated across daemon restarts.
   uint64 downloadedBytesCumulative = 6; // Bytes downloaded accumulated across daemon restarts.
   uint64 totalBlocks = 7;               // The total length of the core.
-  uint64 downloadedBlocks = 8;         // The total number of downloaded blocks.
+  uint64 downloadedBlocks = 8;          // The total number of downloaded blocks.
+  uint64 totalBytes = 9;                // The total number of bytes in the core.
 }
 
 message MountStats {
