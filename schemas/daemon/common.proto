@@ -20,6 +20,12 @@ message MountInfo {
   Mount opts = 2;
 }
 
+message NetworkConfiguration {
+  bool lookup = 1; // Lookup the drive on the DHT.
+  bool announce = 2; // Announce the drive on the DHT.
+  bool remember = 3; // Remember this configuration across restarts.
+}
+
 message CoreStats {
   bytes key = 1;                        // Drive key.
   uint32 peers = 2;                     // Number of connected peers.

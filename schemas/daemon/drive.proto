@@ -39,9 +39,7 @@ message ActiveResponse {
  */
 message ConfigureNetworkRequest {
   uint64 id = 1; // A session ID.
-  bool lookup = 2; // Lookup the drive on the DHT.
-  bool announce = 3; // Announce the drive on the DHT.
-  bool remember = 4; // Remember this configuration across restarts.
+  NetworkConfiguration network = 2; // The network configuration.
 }
 message ConfigureNetworkResponse {}
 
@@ -53,6 +51,7 @@ message DriveStatsRequest {
 }
 message DriveStatsResponse {
   DriveStats stats = 1;
+  NetworkConfiguration network = 2;
 }
 
 /**
