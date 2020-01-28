@@ -6,9 +6,10 @@ message StatusResponse {
   string daemonVersion = 2;
   string clientVersion = 3;
   string schemaVersion = 4;
-  string fuseNativeVersion = 5;
-  string hyperdriveFuseVersion = 6;
-  uint64 uptime = 7;
+  string hyperdriveVersion = 5;
+  string fuseNativeVersion = 6;
+  string hyperdriveFuseVersion = 7;
+  uint64 uptime = 8;
 }
 
 service Hyperdrive {
