@@ -1,7 +1,15 @@
 syntax = "proto3";
 
 message StatusRequest {}
-message StatusResponse {}
+message StatusResponse {
+  uint64 apiVersion = 1;
+  string daemonVersion = 2;
+  string clientVersion = 3;
+  string schemaVersion = 4;
+  string fuseNativeVersion = 5;
+  string hyperdriveFuseVersion = 6;
+  uint64 uptime = 7;
+}
 
 service Hyperdrive {
   rpc status (StatusRequest) returns (StatusResponse);
