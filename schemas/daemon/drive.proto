@@ -19,9 +19,7 @@ message GetDriveResponse {
 /**
  * Get networking statistics across all drives.
  */
-message StatsRequest {
-  bool recursive = 1;
-}
+message StatsRequest {}
 message StatsResponse {
   repeated DriveStats stats = 1;
 }
@@ -50,6 +48,7 @@ message ConfigureNetworkResponse {}
  */
 message DriveStatsRequest {
   uint64 id = 1; // A session ID.
+  bool recursive = 2; // Optionally recurse into mountpoints.
 }
 message DriveStatsResponse {
   DriveStats stats = 1;
