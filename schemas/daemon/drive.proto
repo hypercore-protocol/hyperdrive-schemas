@@ -19,7 +19,9 @@ message GetDriveResponse {
 /**
  * Get networking statistics across all drives.
  */
-message StatsRequest {}
+message StatsRequest {
+  bool recursive = 1;
+}
 message StatsResponse {
   repeated DriveStats stats = 1;
 }
