@@ -10,6 +10,8 @@ message StatusResponse {
   string fuseNativeVersion = 6;
   string hyperdriveFuseVersion = 7;
   uint64 uptime = 8;
+  bool holepunchable = 9;
+  string remoteAddress = 10;
 }
 
 service Hyperdrive {
