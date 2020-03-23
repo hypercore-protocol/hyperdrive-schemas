@@ -16,12 +16,6 @@ message UnmountRequest {
 }
 message UnmountResponse {}
 
-message FuseStatusRequest {}
-message FuseStatusResponse {
-  bool available = 1;
-  bool configured = 2;
-}
-
 message InfoRequest {
   string path = 1;
 }
@@ -33,7 +27,6 @@ message InfoResponse {
 }
 
 service Fuse {
-  rpc status (FuseStatusRequest) returns (FuseStatusResponse);
   rpc mount (MountRequest) returns (MountResponse);
   rpc unmount (UnmountRequest) returns (UnmountResponse);
   rpc info (InfoRequest) returns (InfoResponse);
