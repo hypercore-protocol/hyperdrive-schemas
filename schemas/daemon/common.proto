@@ -13,6 +13,7 @@ message HyperdriveOptions {
   uint64 version = 2;
   bytes hash = 3;
   bool writable = 4;
+  bool seed = 5;
 }
 
 message MountInfo {

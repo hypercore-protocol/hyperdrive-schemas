@@ -22,17 +22,19 @@ message FuseStatusResponse {
   bool configured = 2;
 }
 
-message KeyRequest {
+message InfoRequest {
   string path = 1;
 }
-message KeyResponse {
+message InfoResponse {
   string key = 1;
   string path = 2;
+  string mountPath = 3;
+  bool writable = 4;
 }
 
 service Fuse {
   rpc status (FuseStatusRequest) returns (FuseStatusResponse);
   rpc mount (MountRequest) returns (MountResponse);
   rpc unmount (UnmountRequest) returns (UnmountResponse);
-  rpc key (KeyRequest) returns (KeyResponse);
+  rpc info (InfoRequest) returns (InfoResponse);
 }
