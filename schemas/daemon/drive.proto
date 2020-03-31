@@ -25,6 +25,14 @@ message StatsResponse {
 }
 
 /**
+ * Get networking configurations for all drive.
+ */
+message NetworkConfigurationsRequest {}
+message NetworkConfigurationsResponse {
+  repeated NetworkConfiguration configurations = 2;
+}
+
+/**
  * Get the list of drives that are being advertised.
  */
 message ActiveRequest {}
@@ -326,6 +334,7 @@ service Drive {
   rpc get (GetDriveRequest) returns (GetDriveResponse);
   rpc close (CloseSessionRequest) returns (CloseSessionResponse);
   rpc allStats (StatsRequest) returns (StatsResponse);
+  rpc allNetworkConfigurations (NetworkConfigurationsRequest) returns (NetworkConfigurationsResponse);
   rpc active (ActiveRequest) returns (ActiveResponse);
 
   // Session-specific operations
