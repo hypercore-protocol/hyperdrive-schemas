@@ -14,6 +14,7 @@ message HyperdriveOptions {
   bytes hash = 3;
   bool writable = 4;
   bool seed = 5;
+  bytes discoveryKey = 6;
 }
 
 message MountInfo {
