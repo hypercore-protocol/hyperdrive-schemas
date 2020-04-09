@@ -42,6 +42,16 @@ message ActiveResponse {
   repeated HyperdriveOptions drives = 1;
 }
 
+/**
+ * Get peer counts for a set of keys.
+ */
+message PeerCountsRequest {
+  repeated bytes keys = 1;
+}
+message PeerCountsResponse {
+  repeated uint32 peerCounts = 1;
+}
+
 // Session-specific operations
 
 /**
@@ -339,6 +349,7 @@ service Drive {
   rpc allStats (StatsRequest) returns (StatsResponse);
   rpc allNetworkConfigurations (NetworkConfigurationsRequest) returns (NetworkConfigurationsResponse);
   rpc active (ActiveRequest) returns (ActiveResponse);
+  rpc peerCounts (PeerCountsRequest) returns (PeerCountsResponse);
 
   // Session-specific operations
   rpc configureNetwork (ConfigureNetworkRequest) returns (ConfigureNetworkResponse);

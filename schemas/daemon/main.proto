@@ -19,6 +19,9 @@ message StatusResponse {
   // Fuse Info
   bool fuseAvailable = 11;
   bool fuseConfigured = 12;
+
+  // The public NOISE key used for replication.
+  bytes noiseKey = 13;
 }
 
 service Hyperdrive {
