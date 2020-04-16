@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+/**
+ * Opens a debugging repl.
+ */
+message ReplMessage {
+  bytes io = 1;
+}
+service Debug {
+  rpc repl (stream ReplMessage) returns (stream ReplMessage);
+}
