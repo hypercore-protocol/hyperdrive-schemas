@@ -17,6 +17,13 @@ message HyperdriveOptions {
   bytes discoveryKey = 6;
 }
 
+message HypercoreOptions {
+  bytes key = 1;
+  bytes hash = 2;
+  bytes writable = 3;
+  bytes discoveryKey = 4;
+}
+
 message MountInfo {
   string path = 1;
   Mount opts = 2;
