@@ -21,6 +21,9 @@
     "url": "https://github.com/andrewosh/hyperdrive-schemas/issues"
   },
   "homepage": "https://github.com/andrewosh/hyperdrive-schemas#readme",
+  "dependencies": {
+    "protocol-buffers-encodings": "^1.1.0"
+  },
   "devDependencies": {
     "protocol-buffers": "^4.1.0"
   }
