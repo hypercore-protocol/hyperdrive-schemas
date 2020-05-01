@@ -1,5 +1,11 @@
 syntax = "proto3";
 
+message PeerInfo {
+  bytes noiseKey = 1;
+  string address = 2;
+  string type = 3;
+}
+
 /**
  * Get the NOISE public key corresponding to an alias.
  */
@@ -26,7 +32,6 @@ message GetAliasResponse {
 message WatchPeersRequest {
   bytes discoveryKey = 1;
 }
-
 message WatchPeersResponse {
   enum Type {
     Joined = 0;
@@ -36,8 +41,19 @@ message WatchPeersResponse {
   repeated uint32 peers = 2;
 }
 
+/**
+ * List peers (either all peers, or those swarming around a particular discovery key.
+ */
+message ListPeersRequest {
+  bytes discoveryKey = 1;
+}
+message ListPeersResponse {
+  repeated PeerInfo peers = 1;
+}
+
 service Peers {
   rpc getKey (GetKeyRequest) returns (GetKeyResponse);
   rpc getAlias (GetAliasRequest) returns (GetAliasResponse);
+  rpc listPeers (ListPeersRequest) returns (ListPeersResponse);
   rpc watchPeers (WatchPeersRequest) returns (stream WatchPeersResponse);
 }
