@@ -24,6 +24,13 @@ message StatusResponse {
   bytes noiseKey = 13;
 }
 
+/*
+ * Dynamically enable FUSE.
+ */
+message FuseRefreshRequest {}
+message FuseRefreshResponse {}
+
 service Hyperdrive {
   rpc status (StatusRequest) returns (StatusResponse);
+  rpc refreshFuse (FuseRefreshRequest) returns (FuseRefreshResponse);
 }
