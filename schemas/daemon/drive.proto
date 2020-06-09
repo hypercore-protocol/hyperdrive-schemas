@@ -16,6 +16,22 @@ message GetDriveResponse {
   HyperdriveOptions opts = 2; // Hyperdrive options.
 }
 
+/*
+ * Mirror (download all metadata/contents continuously) a drive.
+ */
+message MirrorRequest {
+  uint64 id = 1;
+}
+message MirrorResponse {}
+
+/*
+ * Stop mirroring a drive.
+ */
+message UnmirrorRequest {
+  uint64 id = 1;
+}
+message UnmirrorResponse {}
+
 /**
  * Get networking statistics across all drives.
  */
@@ -360,6 +376,8 @@ service Drive {
   rpc open (OpenRequest) returns (OpenResponse);
   rpc download (DownloadRequest) returns (DownloadResponse);
   rpc undownload (UndownloadRequest) returns (UndownloadResponse);
+  rpc mirror (MirrorRequest) returns (MirrorResponse);
+  rpc unmirror (UnmirrorRequest) returns (UnmirrorResponse);
   rpc read (stream ReadRequest) returns (stream ReadResponse);
   rpc write (stream WriteRequest) returns (stream WriteResponse);
   rpc createWriteStream (stream WriteStreamRequest) returns (WriteStreamResponse);
